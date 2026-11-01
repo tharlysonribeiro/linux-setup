@@ -54,10 +54,10 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_DATABASE: db
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: cooper
-      MYSQL_PASSWORD: cooper
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?Copy .env.example to .env first}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Copy .env.example to .env first}
+      MYSQL_USER: ${MYSQL_USER:?Copy .env.example to .env first}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Copy .env.example to .env first}
     ports:
       - "3306:3306"
     volumes:
@@ -74,12 +74,12 @@ services:
     container_name: keycloak
     restart: always
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:?Copy .env.example to .env first}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?Copy .env.example to .env first}
       KC_DB: mysql
-      KC_DB_URL: jdbc:mysql://mysql:3306/db 
-      KC_DB_USERNAME: cooper
-      KC_DB_PASSWORD: cooper
+      KC_DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
+      KC_DB_USERNAME: ${MYSQL_USER}
+      KC_DB_PASSWORD: ${MYSQL_PASSWORD}
     command: ["start-dev"]
     ports:
       - "8080:8080"
@@ -91,8 +91,8 @@ services:
     container_name: rabbitmq
     restart: always
     environment:
-      RABBITMQ_DEFAULT_USER: cooper
-      RABBITMQ_DEFAULT_PASS: cooper
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?Copy .env.example to .env first}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?Copy .env.example to .env first}
     ports:
       - "5672:5672"
       - "15672:15672"
