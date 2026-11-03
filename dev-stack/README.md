@@ -12,6 +12,7 @@ Docker Compose services for local development and integration testing. This stac
 | Kafdrop | `http://localhost:9000` |
 | MySQL | `localhost:3306` |
 | Keycloak | `http://localhost:8080` |
+| Authentik | `http://localhost:9001` |
 | RabbitMQ | `localhost:5672`; management UI at `http://localhost:15672` |
 
 ## Start the stack
@@ -26,6 +27,8 @@ docker compose ps
 ```
 
 The credentials in `.env.example` are local development examples. `.env` is ignored by Git. Change the values before using the stack in any shared or persistent environment.
+
+Authentik uses its own PostgreSQL database and is available at `http://localhost:9001`. On first access, complete the initial setup to create its administrator account. Keycloak remains available separately at `http://localhost:8080`; configure OIDC providers and clients in the identity service you choose for an application.
 
 ## Logs and shutdown
 

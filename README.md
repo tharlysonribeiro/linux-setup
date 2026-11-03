@@ -23,7 +23,7 @@ See [ubuntu/README.md](ubuntu/README.md) for supported components and configurat
 
 ## Local development stack
 
-The Compose stack in [`dev-stack/`](dev-stack/) provides Kafka, ZooKeeper, Schema Registry, Kafdrop, MySQL, Keycloak, and RabbitMQ for local development and integration work.
+The Compose stack in [`dev-stack/`](dev-stack/) provides Kafka, ZooKeeper, Schema Registry, Kafdrop, MySQL, Keycloak, Authentik, and RabbitMQ for local development and integration work.
 
 ```bash
 cd dev-stack
@@ -33,3 +33,5 @@ docker compose ps
 ```
 
 See [dev-stack/README.md](dev-stack/README.md) for service endpoints, credentials setup, logs, and shutdown commands. The sample credentials are for local development only.
+
+Optional observability services and K3s instructions are documented in [`dev-stack/observability/`](dev-stack/observability/) and [`dev-stack/k3s/`](dev-stack/k3s/).

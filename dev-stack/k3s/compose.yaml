@@ -1,0 +1,38 @@
+services:
+  k3s-server:
+    image: rancher/k3s:v1.37.0-k3s1
+    container_name: k3s-server
+    hostname: k3s-server
+    command: server --tls-san=127.0.0.1
+    environment:
+      K3S_TOKEN: local-dev-k3s-token
+      K3S_NODE_NAME: k3s-server
+      K3S_KUBECONFIG_OUTPUT: /output/kubeconfig.yaml
+      K3S_KUBECONFIG_MODE: "600"
+    privileged: true
+    restart: unless-stopped
+    tmpfs:
+      - /run
+      - /var/run
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 65535
+        hard: 65535
+    ports:
+      - "16443:6443"
+      - "18080:80"
+      - "18443:443"
+    volumes:
+      - k3s_server_data:/var/lib/rancher/k3s
+      - k3s_kubeconfig:/output
+    healthcheck:
+      test: ["CMD-SHELL", "kubectl get --raw=/readyz >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+volumes:
+  k3s_server_data:
+  k3s_kubeconfig:
