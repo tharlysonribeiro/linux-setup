@@ -1,22 +1,31 @@
 # Local Kubernetes with K3s
 
-The Compose file starts a single-node K3s cluster in a privileged container. Start it with:
+This optional Compose file starts a single-node K3s cluster in a privileged container. It does not install a Kubernetes service on the host. Docker must be allowed to run privileged containers.
+
+From this directory, start the cluster and wait for the API server healthcheck:
 
 ```bash
 docker compose -f compose.yaml up -d --wait
 ```
 
-The Kubernetes API is exposed at `https://localhost:16443`; local ingress uses ports `18080` and `18443`. Copy the generated kubeconfig and update its API address before using it from the host:
+The Kubernetes API is exposed at `https://127.0.0.1:16443`; the bundled Traefik ingress uses host ports `18080` and `18443`.
+
+Check the node without installing `kubectl` on the host:
 
 ```bash
 docker exec k3s-server kubectl get nodes
+```
+
+To use a host `kubectl` client, copy the generated kubeconfig and update its API address:
+
+```bash
 mkdir -p ~/.kube
 docker cp k3s-server:/output/kubeconfig.yaml ~/.kube/k3s.yaml
 sed -i 's/127.0.0.1:6443/127.0.0.1:16443/' ~/.kube/k3s.yaml
 kubectl --kubeconfig ~/.kube/k3s.yaml get nodes
 ```
 
-The first command works without a host `kubectl` installation. The remaining commands use the host `kubectl` client.
+The `kubectl` client on the host is a separate prerequisite; the Compose stack does not install it.
 
 Stop the cluster and remove its container with:
 

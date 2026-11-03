@@ -21,17 +21,24 @@ Choose the components you need. For example:
 
 See [ubuntu/README.md](ubuntu/README.md) for supported components and configuration details.
 
-## Local development stack
+## Local development stacks
 
-The Compose stack in [`dev-stack/`](dev-stack/) provides Kafka, ZooKeeper, Schema Registry, Kafdrop, MySQL, Keycloak, Authentik, and RabbitMQ for local development and integration work.
+Docker Engine with the Compose v2 plugin is required. Each stack is started from its own directory and can be stopped independently.
+
+| Stack | Starts by default? | Services | Guide |
+| --- | --- | --- | --- |
+| Development | Yes, when you run its Compose file | Kafka, ZooKeeper, Schema Registry, Kafdrop, MySQL, Keycloak, Authentik, RabbitMQ | [`dev-stack/README.md`](dev-stack/README.md) |
+| Grafana observability | No | OpenTelemetry Collector, Tempo, Loki, Prometheus, Grafana | [`dev-stack/observability/README.md`](dev-stack/observability/README.md) |
+| SigNoz | No; alternative telemetry backend | SigNoz and its required storage/collector services | [`dev-stack/observability/README.md`](dev-stack/observability/README.md) |
+| K3s | No | Single-node Kubernetes cluster | [`dev-stack/k3s/README.md`](dev-stack/k3s/README.md) |
+
+Start the main development stack:
 
 ```bash
 cd dev-stack
 cp .env.example .env
-docker compose up -d
+docker compose up -d --wait
 docker compose ps
 ```
 
-See [dev-stack/README.md](dev-stack/README.md) for service endpoints, credentials setup, logs, and shutdown commands. The sample credentials are for local development only.
-
-Optional observability services and K3s instructions are documented in [`dev-stack/observability/`](dev-stack/observability/) and [`dev-stack/k3s/`](dev-stack/k3s/).
+The other stacks are opt-in. They use separate Compose files so you can run only the services needed for your task. Check each guide for host ports, credentials, persistence, and port conflicts before starting optional stacks together. Sample credentials are for local development only.
